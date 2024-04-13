@@ -35,21 +35,23 @@ Carousel.prototype = {
     this.nextBtn = this.container.querySelector("#next-btn");
   },
 
-  // ==1== переносим из HTML
   _initIndicators() {
-    //   ==3== создать элемент
     const indicators = document.createElement("div");
-    // ==5== добавляем пустому диву айди и класс
+
     indicators.setAttribute("id", "indicators-container");
     indicators.setAttribute("class", "indicators");
-    //    ==6== создадим элемент "индикатор"(не разметку, как с контролсами)
-    const indicator = document.createElement("div");
-    //    ==8== добавляем пустому диву классы
-    indicator.setAttribute("class", "indicator");
-    indicator.setAttribute("data-slide-to", "0");
-    // ==7==
-    indicators.append(indicator);
-    //   ==4== аппендим индикаторы к контейнеру
+
+    for (let i = 0; i < this.SLIDES_COUNT; i++) {
+      const indicator = document.createElement("div");
+
+      indicator.setAttribute(
+        "class",
+        i !== 0 ? "indicator" : "indicator active"
+      );
+      indicator.setAttribute("data-slide-to", i);
+      indicators.append(indicator);
+    }
+
     this.container.append(indicators);
 
     //     <div id="indicators-container" class="indicators">
