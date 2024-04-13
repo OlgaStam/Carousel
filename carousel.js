@@ -8,13 +8,15 @@ class Carousel {
   }
 
   _initConfig(o) {
-    const p = {
-      containerID: "#carousel",
-      slideID: ".slide",
-      interval: 5000,
-      isPlaying: true,
+    return {
+      ...{
+        containerID: "#carousel",
+        slideID: ".slide",
+        interval: 5000,
+        isPlaying: true,
+      },
+      ...o,
     };
-    return { ...p, ...o };
   }
 
   _initProps() {
