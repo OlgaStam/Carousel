@@ -1,10 +1,5 @@
 import SwipeCarousel from "./carousel-constructor.js";
 
-const carousel = new SwipeCarousel({
-  containerID: "#myslider",
-  //   slideID: ".slide",
-  interval: 1000,
-  //   isPlaying: true,
-});
-
+const carousel = new SwipeCarousel();
+// == если не задать конфиг - будет андефайнд ошибка - делаем проверку
 carousel.initApp();

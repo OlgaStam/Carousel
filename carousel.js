@@ -1,15 +1,12 @@
 class Carousel {
   constructor(params) {
-    //   ==2==
     const settings = this._initConfig(params);
-    //    ==3==
     this.container = document.querySelector(settings.containerID);
     this.slideItems = this.container.querySelectorAll(settings.slideID);
     this.interval = settings.interval;
     this.isPlaying = settings.isPlaying;
   }
 
-  // ==1==
   _initConfig(objectWithInnerParams) {
     const defaultObject = {
       containerID: "#carousel",
@@ -17,14 +14,19 @@ class Carousel {
       interval: 5000,
       isPlaying: true,
     };
-    //   ==4==
     console.log(
       "🚀 ~ Carousel ~ _ininConfig ~ objectWithInnerParams:",
       objectWithInnerParams
     );
     console.log("🚀 ~ Carousel ~ _ininConfig ~ defaultObject:", defaultObject);
-    //  ==5== полученный с дефолтным нужно смёрджить
+
     const resultObject = {};
+
+    // == если не задать конфиг - будет андефайнд ошибка - делаем проверку
+    if (typeof objectWithInnerParams === "undefined") {
+      return defaultObject;
+    }
+
     resultObject.containerID =
       objectWithInnerParams.containerID || defaultObject.containerID;
     resultObject.slideID =
@@ -34,7 +36,6 @@ class Carousel {
     resultObject.isPlaying =
       objectWithInnerParams.isPlaying || defaultObject.isPlaying;
 
-    // return defaultObject;
     console.log("🚀 ~ Carousel ~ _initConfig ~ resultObject:", resultObject);
     return resultObject;
   }
