@@ -48,19 +48,11 @@ Carousel.prototype = {
         "class",
         i !== 0 ? "indicator" : "indicator active"
       );
-      indicator.setAttribute("data-slide-to", i);
+      indicator.dataset.slideTo = `${i}`; //с конвертацией і в строку
       indicators.append(indicator);
     }
 
     this.container.append(indicators);
-
-    //     <div id="indicators-container" class="indicators">
-    //     <div class="indicator active" data-slide-to="0"></div>
-    //     <div class="indicator" data-slide-to="1"></div>
-    //     <div class="indicator" data-slide-to="2"></div>
-    //     <div class="indicator" data-slide-to="3"></div>
-    //     <div class="indicator" data-slide-to="4"></div>
-    //   </div>
 
     this.indicatorsContainer = this.container.querySelector(
       "#indicators-container"
