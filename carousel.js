@@ -1,21 +1,29 @@
 class Carousel {
-  constructor(params) {
-    const settings = this._initConfig(params);
+  constructor(p) {
+    const settings = {
+      ...{
+        containerID: "#carousel",
+        slideID: ".slide",
+        interval: 5000,
+        isPlaying: true,
+      },
+      ...p,
+    };
     this.container = document.querySelector(settings.containerID);
     this.slideItems = this.container.querySelectorAll(settings.slideID);
     this.interval = settings.interval;
     this.isPlaying = settings.isPlaying;
   }
-
-  _initConfig = (o) => ({
-    ...{
-      containerID: "#carousel",
-      slideID: ".slide",
-      interval: 5000,
-      isPlaying: true,
-    },
-    ...o,
-  });
+  //  можем не писать функцию, а передать сразу этот объект, переопределив параметры "о" на "р"
+  //   _initConfig = (o) => ({
+  //     ...{
+  //       containerID: "#carousel",
+  //       slideID: ".slide",
+  //       interval: 5000,
+  //       isPlaying: true,
+  //     },
+  //     ...o,
+  //   });
 
   _initProps() {
     this.currentSlide = 0;
