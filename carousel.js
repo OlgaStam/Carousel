@@ -10,24 +10,24 @@ function Carousel() {
     "#indicators-container"
   );
   this.indicatorItems = this.indicatorsContainer.querySelectorAll(".indicator");
-  // разгружаем функцию конструктор чтобы там осталась только суть
 }
 
 Carousel.prototype = {
   _initProps() {
-    // все это относится с инициализации свойств
+    this.currentSlide = 0;
+    this.isPlaying = true;
+    this.interval = 1000;
+
     this.SLIDES_COUNT = this.slides.length;
     this.CODE_ARROW_RIGHT = "ArrowRight";
     this.CODE_ARROW_LEFT = "ArrowLeft";
     this.CODE_SPACE = "Space";
     this.FA_PAUSE = '<i class="fas fa-pause-circle">';
     this.FA_PLAY = '<i class="fas fa-play-circle">';
-    this.currentSlide = 0;
-    this.timerID = null;
-    this.isPlaying = true;
-    this.interval = 1000;
-    this.startPosX = null;
-    this.endPosX = null;
+    // убираем, т.к. если обратится к ненуществующему свойству - оно будет создано
+    // this.timerID = null;
+    // this.startPosX = null;
+    // this.endPosX = null;
   },
 
   _initListeners() {

@@ -1,6 +1,5 @@
 function SwipeCarousel() {
   Carousel.apply(this, arguments);
-  // чтобы свайпать не на контейнере а только на слайде
   this.slidesContainer = this.container.querySelector(".slides");
 }
 
@@ -9,6 +8,8 @@ SwipeCarousel.prototype = Object.create(Carousel.prototype);
 SwipeCarousel.prototype.constructor = SwipeCarousel;
 
 SwipeCarousel.prototype._initListeners = function () {
+  // кнопки отвалились, фиксим: передаем контекст, вызываются базовые лисенеры, потом добавляются обработчики
+  Carousel.prototype._initListeners.apply(this);
   this.slidesContainer.addEventListener(
     "touchstart",
     this._swipeStart.bind(this)
