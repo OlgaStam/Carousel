@@ -7,37 +7,14 @@ class Carousel {
     this.isPlaying = settings.isPlaying;
   }
 
-  _initConfig(objectWithInnerParams) {
-    const defaultObject = {
+  _initConfig(o) {
+    const p = {
       containerID: "#carousel",
       slideID: ".slide",
       interval: 5000,
       isPlaying: true,
     };
-    const resultObject = { ...defaultObject, ...objectWithInnerParams };
-
-    //   console.log(
-    //   "🚀 ~ Carousel ~ _ininConfig ~ objectWithInnerParams:",
-    //   objectWithInnerParams
-    // );
-    // console.log("🚀 ~ Carousel ~ _ininConfig ~ defaultObject:", defaultObject);
-
-    // if (typeof objectWithInnerParams === "undefined") {
-    //   return defaultObject;
-    // }
-
-    // resultObject.containerID =
-    //   objectWithInnerParams.containerID || defaultObject.containerID;
-    // resultObject.slideID =
-    //   objectWithInnerParams.slideID || defaultObject.slideID;
-    // resultObject.interval =
-    //   objectWithInnerParams.interval || defaultObject.interval;
-    // resultObject.isPlaying =
-    //   objectWithInnerParams.isPlaying || defaultObject.isPlaying;
-    // вместо этого кода для слияния нужна одна строка
-    //   оператор "..." разобрал и получил копию
-    // console.log({ ...defaultObject, ...objectWithInnerParams });
-    return resultObject;
+    return { ...p, ...o };
   }
 
   _initProps() {
