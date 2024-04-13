@@ -26,7 +26,15 @@ function Carousel() {
   this.startPosX = 0;
   this.endPosX = 0;
 }
-Carousel.prototype = {};
+Carousel.prototype = {
+  gotoNth(n) {
+    this.slides[this.currentSlide].classList.toggle("active");
+    this.indicatorItems[this.currentSlide].classList.toggle("active");
+    this.currentSlide = (n + this.SLIDES_COUNT) % this.SLIDES_COUNT;
+    this.indicatorItems[this.currentSlide].classList.toggle("active");
+    this.slides[this.currentSlide].classList.toggle("active");
+  },
+};
 Carousel.prototype.constructor = Carousel;
 
 const carousel = new Carousel();
@@ -36,14 +44,6 @@ console.log("🚀 ~ carousel:", carousel);
 //   // оптимизация запросов не по всему документу а только в карусели
 //
 
-//   function gotoNth(n) {
-//     slides[currentSlide].classList.toggle("active");
-//     indicatorItems[currentSlide].classList.toggle("active");
-//     currentSlide = (n + SLIDES_COUNT) % SLIDES_COUNT;
-//     /*n + SLIDES_COUNT удлиннили цикл итераций чтобы в обратную сторону не получить -1*/
-//     indicatorItems[currentSlide].classList.toggle("active");
-//     slides[currentSlide].classList.toggle("active");
-//   }
 //   function gotoPrev() {
 //     gotoNth(currentSlide - 1);
 //   }
