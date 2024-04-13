@@ -3,10 +3,6 @@
 function Carousel() {
   this.container = document.querySelector("#container");
   this.slides = this.container.querySelectorAll(".slide");
-  this.indicatorsContainer = this.container.querySelector(
-    "#indicators-container"
-  );
-  this.indicatorItems = this.indicatorsContainer.querySelectorAll(".indicator");
 }
 
 Carousel.prototype = {
@@ -14,7 +10,6 @@ Carousel.prototype = {
     this.currentSlide = 0;
     this.isPlaying = true;
     this.interval = 1000;
-
     this.SLIDES_COUNT = this.slides.length;
     this.CODE_ARROW_RIGHT = "ArrowRight";
     this.CODE_ARROW_LEFT = "ArrowLeft";
@@ -27,23 +22,49 @@ Carousel.prototype = {
 
   _initControls() {
     const controls = document.createElement("div");
-    const PAUSE = `<div id="pause-btn" class="control control-pause">
-                    ${this.FA_PAUSE}
-                    </div>`;
-    const PREV = `<div id="prev-btn" class="control control-prev"> 
-                    ${this.FA_PREV}
-                    </div>`;
-    const NEXT = `<div id="next-btn" class="control control-next">
-                    ${this.FA_NEXT}
-                </div>`;
+    const PAUSE = `<div id="pause-btn" class="control control-pause">${this.FA_PAUSE}</div>`;
+    const PREV = `<div id="prev-btn" class="control control-prev">${this.FA_PREV}</div>`;
+    const NEXT = `<div id="next-btn" class="control control-next">${this.FA_NEXT}</div>`;
+    controls.setAttribute("id", "controls-container");
     controls.setAttribute("class", "controls");
     controls.innerHTML = PREV + PAUSE + NEXT;
 
     this.container.append(controls);
-    // когда стартовал конструктор элементов не было, теперь есть и можно вызвать лисенеры
     this.pauseBtn = this.container.querySelector("#pause-btn");
     this.prevBtn = this.container.querySelector("#prev-btn");
     this.nextBtn = this.container.querySelector("#next-btn");
+  },
+
+  // ==1== переносим из HTML
+  _initIndicators() {
+    //   ==3== создать элемент
+    const indicators = document.createElement("div");
+    // ==5== добавляем пустому диву айди и класс
+    indicators.setAttribute("id", "indicators-container");
+    indicators.setAttribute("class", "indicators");
+    //    ==6== создадим элемент "индикатор"(не разметку, как с контролсами)
+    const indicator = document.createElement("div");
+    //    ==8== добавляем пустому диву классы
+    indicator.setAttribute("class", "indicator");
+    indicator.setAttribute("data-slide-to", "0");
+    // ==7==
+    indicators.append(indicator);
+    //   ==4== аппендим индикаторы к контейнеру
+    this.container.append(indicators);
+
+    //     <div id="indicators-container" class="indicators">
+    //     <div class="indicator active" data-slide-to="0"></div>
+    //     <div class="indicator" data-slide-to="1"></div>
+    //     <div class="indicator" data-slide-to="2"></div>
+    //     <div class="indicator" data-slide-to="3"></div>
+    //     <div class="indicator" data-slide-to="4"></div>
+    //   </div>
+
+    this.indicatorsContainer = this.container.querySelector(
+      "#indicators-container"
+    );
+    this.indicatorItems =
+      this.indicatorsContainer.querySelectorAll(".indicator");
   },
 
   _initListeners() {
@@ -115,9 +136,11 @@ Carousel.prototype = {
     if (e.code === this.CODE_SPACE) this.pausePlay();
   },
 
+  //   ==2== инициализируем индикаторс
   initApp() {
     this._initProps();
     this._initControls();
+    this._initIndicators();
     this._initListeners();
     this._tick();
   },
