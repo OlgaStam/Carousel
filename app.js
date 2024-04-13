@@ -39,11 +39,13 @@ Carousel.prototype = {
     this.gotoNth(this.currentSlide - 1);
   },
   gotoNext() {
+    console.log(this);
     this.gotoNth(this.currentSlide + 1);
   },
 
   tick() {
     this.timerID = setInterval(this.gotoNext, this.interval);
+    console.log("🚀 ~ tick ~ this:", this);
   },
 
   playHandler() {
@@ -113,13 +115,12 @@ Carousel.prototype = {
   },
   initApp() {
     this.initListeners();
+    console.log("🚀 ~ initApp ~ this:", this);
     this.tick();
   },
 };
 Carousel.prototype.constructor = Carousel;
 
 const carousel = new Carousel();
-console.log("🚀 ~ carousel:", carousel);
 
-//   initApp();
-// })();
+carousel.initApp();
