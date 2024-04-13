@@ -26,6 +26,8 @@ function Carousel() {
   this.startPosX = 0;
   this.endPosX = 0;
 }
+Carousel.prototype = {};
+Carousel.prototype.constructor = Carousel;
 
 const carousel = new Carousel();
 console.log("🚀 ~ carousel:", carousel);
