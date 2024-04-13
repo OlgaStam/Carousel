@@ -36,47 +36,45 @@ Carousel.prototype = {
     this.slides[this.currentSlide].classList.toggle("active");
   },
   gotoPrev() {
-    gotoNth(currentSlide - 1);
+    this.gotoNth(this.currentSlide - 1);
   },
   gotoNext() {
-    gotoNth(currentSlide + 1);
+    this.gotoNth(this.currentSlide + 1);
   },
 
   tick() {
-    timerID = setInterval(gotoNext, interval);
+    this.timerID = setInterval(this.gotoNext, this.interval);
   },
 
   playHandler() {
-    tick();
-    pauseBtn.innerHTML = FA_PAUSE;
-    isPlaying = true;
+    this.pauseBtn.innerHTML = this.FA_PAUSE;
+    this.isPlaying = true;
+    this.tick();
   },
   pauseHandler() {
-    clearInterval(timerID);
-    pauseBtn.innerHTML = FA_PLAY;
-    isPlaying = false;
+    this.pauseBtn.innerHTML = this.FA_PLAY;
+    this.isPlaying = false;
+    this.clearInterval(this.timerID);
   },
   pausePlay() {
-    return isPlaying ? pauseHandler() : playHandler();
+    return this.isPlaying ? this.pauseHandler() : this.playHandler();
   },
 
   prev() {
-    pauseHandler();
-    gotoPrev();
+    this.pauseHandler();
+    this.gotoPrev();
   },
   next() {
-    pauseHandler();
-    gotoNext();
+    this.pauseHandler();
+    this.gotoNext();
   },
 
   indicate(e) {
     const target = e.target;
 
     if (target && target.classList.contains("indicator")) {
-      pauseHandler();
-      // Метод getAttribute() всегда возвращает значение атрибута как строку, независимо от типа атрибута. поэтому ставим +
-      // gotoNth(+target.getAttribute("data-slide-to"));
-      gotoNth(+target.dataset.slideTo);
+      this.pauseHandler();
+      this.gotoNth(+target.dataset.slideTo);
     }
   },
 
@@ -85,40 +83,37 @@ Carousel.prototype = {
     // key: 'ArrowRight'
     // 'ArrowLeft'
     // 'Space'
-    if (e.code === CODE_ARROW_RIGHT) next();
-    if (e.code === CODE_ARROW_LEFT) prev();
-    if (e.code === CODE_SPACE) pausePlay();
+    if (e.code === this.CODE_ARROW_RIGHT) this.next();
+    if (e.code === this.CODE_ARROW_LEFT) this.prev();
+    if (e.code === this.CODE_SPACE) this.pausePlay();
   },
 
   swipeStart(e) {
-    startPosX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
+    this.startPosX =
+      e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
   },
   swipeEnd(e) {
-    endPosX = e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
+    this.endPosX =
+      e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
 
-    if (endPosX - startPosX > 100) prev();
-    if (endPosX - startPosX < -100) next();
-    // 100 вместо 0 чтобы не учитывать случайное касание
+    if (this.endPosX - this.startPosX > 100) this.prev();
+    if (this.endPosX - this.startPosX < -100) this.next();
   },
 
   initListeners() {
-    pauseBtn.addEventListener("click", pausePlay);
-    prevBtn.addEventListener("click", prev);
-    nextBtn.addEventListener("click", next);
+    this.pauseBtn.addEventListener("click", this.pausePlay);
+    this.prevBtn.addEventListener("click", this.prev);
+    this.nextBtn.addEventListener("click", this.next);
+    this.indicatorsContainer.addEventListener("click", this.indicate);
+    this.container.addEventListener("touchend", this.swipeEnd);
+    this.container.addEventListener("mousedown", this.swipeStart);
+    this.container.addEventListener("mouseup", this.swipeEnd);
 
-    indicatorsContainer.addEventListener("click", indicate);
-    // для свайпа на мобильном
-    container.addEventListener("touchstart", swipeStart);
-    container.addEventListener("touchend", swipeEnd);
-    // для свайпа на десктопе
-    container.addEventListener("mousedown", swipeStart);
-    container.addEventListener("mouseup", swipeEnd);
-
-    document.addEventListener("keydown", pressKey);
+    document.addEventListener("keydown", this.pressKey);
   },
   initApp() {
-    initListeners();
-    tick();
+    this.initListeners();
+    this.tick();
   },
 };
 Carousel.prototype.constructor = Carousel;
