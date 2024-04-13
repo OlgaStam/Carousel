@@ -1,17 +1,15 @@
 function Carousel() {
   this.container = document.querySelector("#container");
   this.slides = this.container.querySelectorAll(".slide");
-
-  this.pauseBtn = this.container.querySelector("#pause-btn");
-  this.prevBtn = this.container.querySelector("#prev-btn");
-  this.nextBtn = this.container.querySelector("#next-btn");
-
   this.indicatorsContainer = this.container.querySelector(
     "#indicators-container"
   );
   this.indicatorItems = this.indicatorsContainer.querySelectorAll(".indicator");
+  this.pauseBtn = this.container.querySelector("#pause-btn");
+  this.prevBtn = this.container.querySelector("#prev-btn");
+  this.nextBtn = this.container.querySelector("#next-btn");
 
-  this.SLIDES_COUNT = slides.length;
+  this.SLIDES_COUNT = this.slides.length;
   this.CODE_ARROW_RIGHT = "ArrowRight";
   this.CODE_ARROW_LEFT = "ArrowLeft";
   this.CODE_SPACE = "Space";
@@ -39,12 +37,11 @@ Carousel.prototype = {
     this.gotoNth(this.currentSlide - 1);
   },
   gotoNext() {
-    console.log(this);
     this.gotoNth(this.currentSlide + 1);
   },
 
   tick() {
-    this.timerID = setInterval(this.gotoNext, this.interval);
+    this.timerID = setInterval(this.gotoNext.bind(this), this.interval);
     console.log("🚀 ~ tick ~ this:", this);
   },
 
@@ -67,6 +64,7 @@ Carousel.prototype = {
     this.gotoPrev();
   },
   next() {
+    console.log(this);
     this.pauseHandler();
     this.gotoNext();
   },
