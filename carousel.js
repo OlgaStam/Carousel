@@ -1,14 +1,14 @@
 class Carousel {
   constructor(containerID = "#container", slideID = ".slide", interval = 5000) {
     this.container = document.querySelector(containerID);
-    this.slides = this.container.querySelectorAll(slideID);
+    this.slideItems = this.container.querySelectorAll(slideID);
     this.interval = interval;
   }
 
   _initProps() {
     this.currentSlide = 0;
     this.isPlaying = true;
-    this.SLIDES_COUNT = this.slides.length;
+    this.SLIDES_COUNT = this.slideItems.length;
     this.CODE_ARROW_RIGHT = "ArrowRight";
     this.CODE_ARROW_LEFT = "ArrowLeft";
     this.CODE_SPACE = "Space";
@@ -72,11 +72,11 @@ class Carousel {
   }
 
   _gotoNth(n) {
-    this.slides[this.currentSlide].classList.toggle("active");
+    this.slideItems[this.currentSlide].classList.toggle("active");
     this.indicatorItems[this.currentSlide].classList.toggle("active");
     this.currentSlide = (n + this.SLIDES_COUNT) % this.SLIDES_COUNT;
     this.indicatorItems[this.currentSlide].classList.toggle("active");
-    this.slides[this.currentSlide].classList.toggle("active");
+    this.slideItems[this.currentSlide].classList.toggle("active");
   }
 
   _gotoPrev() {

@@ -3,8 +3,11 @@ import Carousel from "./carousel.js"; //.js не забываем вручную
 class SwipeCarousel extends Carousel {
   constructor(...args) {
     super(...args);
-    //   todo: исправить позже
-    this.slidesContainer = this.container.querySelector(".slides");
+    // вместо того чтобы делать выборку в ДОМ структуре
+    // this.slidesContainer = this.container.querySelector(".slides");
+    //   обращаемся к полученныим динамически из параметра слайд-айтемсам
+    //   и подключаем родитея
+    this.slidesContainer = this.slideItems[0].parentElement;
   }
 
   _initListeners() {
