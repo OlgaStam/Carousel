@@ -21,8 +21,9 @@ function Carousel() {
   this.startPosX = null;
   this.endPosX = null;
 }
+
 Carousel.prototype = {
-  gotoNth(n) {
+  _gotoNth(n) {
     this.slides[this.currentSlide].classList.toggle("active");
     this.indicatorItems[this.currentSlide].classList.toggle("active");
     this.currentSlide = (n + this.SLIDES_COUNT) % this.SLIDES_COUNT;
@@ -30,65 +31,62 @@ Carousel.prototype = {
     this.slides[this.currentSlide].classList.toggle("active");
   },
 
-  gotoPrev() {
-    this.gotoNth(this.currentSlide - 1);
+  _gotoPrev() {
+    this._gotoNth(this.currentSlide - 1);
   },
 
-  gotoNext() {
-    this.gotoNth(this.currentSlide + 1);
+  _gotoNext() {
+    this._gotoNth(this.currentSlide + 1);
   },
 
-  tick() {
-    this.timerID = setInterval(() => this.gotoNext(), this.interval);
+  _tick() {
+    this.timerID = setInterval(() => this._gotoNext(), this.interval);
   },
 
-  playHandler() {
+  _playHandler() {
     this.pauseBtn.innerHTML = this.FA_PAUSE;
     this.isPlaying = true;
-    this.tick();
+    this._tick();
   },
-  pauseHandler() {
+
+  _pauseHandler() {
     this.pauseBtn.innerHTML = this.FA_PLAY;
     this.isPlaying = false;
     clearInterval(this.timerID);
   },
-  pausePlay() {
-    return this.isPlaying ? this.pauseHandler() : this.playHandler();
-  },
 
+  pausePlay() {
+    return this.isPlaying ? this._pauseHandler() : this._playHandler();
+  },
   prev() {
-    this.pauseHandler();
-    this.gotoPrev();
+    this._pauseHandler();
+    this._gotoPrev();
   },
   next() {
-    this.pauseHandler();
-    this.gotoNext();
+    this._pauseHandler();
+    this._gotoNext();
   },
 
-  indicate(e) {
+  _indicate(e) {
     const target = e.target;
 
     if (target && target.classList.contains("indicator")) {
-      this.pauseHandler();
-      this.gotoNth(+target.dataset.slideTo);
+      this._pauseHandler();
+      this._gotoNth(+target.dataset.slideTo);
     }
   },
 
-  pressKey(e) {
-    // console.log("🚀 ~ pressKey ~ e:", e);
-    // key: 'ArrowRight'
-    // 'ArrowLeft'
-    // 'Space'
+  _pressKey(e) {
     if (e.code === this.CODE_ARROW_RIGHT) this.next();
     if (e.code === this.CODE_ARROW_LEFT) this.prev();
     if (e.code === this.CODE_SPACE) this.pausePlay();
   },
 
-  swipeStart(e) {
+  _swipeStart(e) {
     this.startPosX =
       e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
   },
-  swipeEnd(e) {
+  _swipeEnd(e) {
     this.endPosX =
       e instanceof MouseEvent ? e.pageX : e.changedTouches[0].pageX;
 
@@ -96,23 +94,23 @@ Carousel.prototype = {
     if (this.endPosX - this.startPosX < -100) this.next();
   },
 
-  initListeners() {
+  _initListeners() {
     this.pauseBtn.addEventListener("click", this.pausePlay.bind(this));
     this.prevBtn.addEventListener("click", this.prev.bind(this));
     this.nextBtn.addEventListener("click", this.next.bind(this));
     this.indicatorsContainer.addEventListener(
       "click",
-      this.indicate.bind(this)
+      this._indicate.bind(this)
     );
-    this.container.addEventListener("touchend", this.swipeEnd.bind(this));
-    this.container.addEventListener("mousedown", this.swipeStart.bind(this));
-    this.container.addEventListener("mouseup", this.swipeEnd.bind(this));
+    this.container.addEventListener("touchend", this._swipeEnd.bind(this));
+    this.container.addEventListener("mousedown", this._swipeStart.bind(this));
+    this.container.addEventListener("mouseup", this._swipeEnd.bind(this));
 
-    document.addEventListener("keydown", this.pressKey.bind(this));
+    document.addEventListener("keydown", this._pressKey.bind(this));
   },
   initApp() {
-    this.initListeners();
-    this.tick();
+    this._initListeners();
+    this._tick();
   },
 };
 
