@@ -1,22 +1,19 @@
 function Carousel() {
   this.container = document.querySelector("#container");
   this.slides = this.container.querySelectorAll(".slide");
+  this.pauseBtn = this.container.querySelector("#pause-btn");
+  this.prevBtn = this.container.querySelector("#prev-btn");
+  this.nextBtn = this.container.querySelector("#next-btn");
   this.indicatorsContainer = this.container.querySelector(
     "#indicators-container"
   );
   this.indicatorItems = this.indicatorsContainer.querySelectorAll(".indicator");
-  this.pauseBtn = this.container.querySelector("#pause-btn");
-  this.prevBtn = this.container.querySelector("#prev-btn");
-  this.nextBtn = this.container.querySelector("#next-btn");
-
   this.SLIDES_COUNT = this.slides.length;
   this.CODE_ARROW_RIGHT = "ArrowRight";
   this.CODE_ARROW_LEFT = "ArrowLeft";
   this.CODE_SPACE = "Space";
-
   this.FA_PAUSE = '<i class="fas fa-pause-circle">';
   this.FA_PLAY = '<i class="fas fa-play-circle">';
-
   this.currentSlide = 0;
   this.timerID = null;
   this.isPlaying = true;
@@ -24,7 +21,6 @@ function Carousel() {
   this.startPosX = null;
   this.endPosX = null;
 }
-
 Carousel.prototype = {
   gotoNth(n) {
     this.slides[this.currentSlide].classList.toggle("active");
@@ -33,16 +29,17 @@ Carousel.prototype = {
     this.indicatorItems[this.currentSlide].classList.toggle("active");
     this.slides[this.currentSlide].classList.toggle("active");
   },
+
   gotoPrev() {
     this.gotoNth(this.currentSlide - 1);
   },
+
   gotoNext() {
     this.gotoNth(this.currentSlide + 1);
   },
 
   tick() {
-    this.timerID = setInterval(this.gotoNext.bind(this), this.interval);
-    console.log("🚀 ~ tick ~ this:", this);
+    this.timerID = setInterval(() => this.gotoNext(), this.interval);
   },
 
   playHandler() {
@@ -53,7 +50,7 @@ Carousel.prototype = {
   pauseHandler() {
     this.pauseBtn.innerHTML = this.FA_PLAY;
     this.isPlaying = false;
-    this.clearInterval(this.timerID);
+    clearInterval(this.timerID);
   },
   pausePlay() {
     return this.isPlaying ? this.pauseHandler() : this.playHandler();
@@ -64,7 +61,6 @@ Carousel.prototype = {
     this.gotoPrev();
   },
   next() {
-    console.log(this);
     this.pauseHandler();
     this.gotoNext();
   },
@@ -101,24 +97,26 @@ Carousel.prototype = {
   },
 
   initListeners() {
-    this.pauseBtn.addEventListener("click", this.pausePlay);
-    this.prevBtn.addEventListener("click", this.prev);
-    this.nextBtn.addEventListener("click", this.next);
-    this.indicatorsContainer.addEventListener("click", this.indicate);
-    this.container.addEventListener("touchend", this.swipeEnd);
-    this.container.addEventListener("mousedown", this.swipeStart);
-    this.container.addEventListener("mouseup", this.swipeEnd);
+    this.pauseBtn.addEventListener("click", this.pausePlay.bind(this));
+    this.prevBtn.addEventListener("click", this.prev.bind(this));
+    this.nextBtn.addEventListener("click", this.next.bind(this));
+    this.indicatorsContainer.addEventListener(
+      "click",
+      this.indicate.bind(this)
+    );
+    this.container.addEventListener("touchend", this.swipeEnd.bind(this));
+    this.container.addEventListener("mousedown", this.swipeStart.bind(this));
+    this.container.addEventListener("mouseup", this.swipeEnd.bind(this));
 
-    document.addEventListener("keydown", this.pressKey);
+    document.addEventListener("keydown", this.pressKey.bind(this));
   },
   initApp() {
     this.initListeners();
-    console.log("🚀 ~ initApp ~ this:", this);
     this.tick();
   },
 };
+
 Carousel.prototype.constructor = Carousel;
 
 const carousel = new Carousel();
-
 carousel.initApp();
