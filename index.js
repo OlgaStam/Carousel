@@ -1,7 +1,12 @@
 import SwipeCarousel from "./carousel-constructor.js";
-// .js указать вручную
-// ошибка - does not provide an export named 'default'
-//  говорим - надо взять, а в carousel-constructor.js не отдали
-// идем туда вниз, прописываем экспорт
-const carousel = new SwipeCarousel("#myslider", ".item", 1000);
+
+// чтобы можно было пропускать параметры, перепишем их на дефолтный объект "params"
+// const carousel = new SwipeCarousel("#myslider", ".item", 1000);
+const carousel = new SwipeCarousel({
+  containerID: "#myslider",
+  slideID: ".slide",
+  interval: 1000,
+  isPlaing: true,
+});
+
 carousel.initApp();

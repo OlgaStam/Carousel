@@ -1,8 +1,16 @@
 class Carousel {
-  constructor(containerID = "#container", slideID = ".slide", interval = 5000) {
-    this.container = document.querySelector(containerID);
-    this.slideItems = this.container.querySelectorAll(slideID);
-    this.interval = interval;
+  constructor(params) {
+    // дефолтный объект "params"
+    // {
+    //     containerID: "#myslider",
+    //     slideID: ".slide",
+    //     interval: 1000,
+    //     isPlaing: true,
+    //   }
+    this.container = document.querySelector(params.containerID);
+    this.slideItems = this.container.querySelectorAll(params.slideID);
+    this.interval = params.interval;
+    this.isPlaying = params.isPlaying;
   }
 
   _initProps() {
