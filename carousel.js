@@ -144,3 +144,4 @@ Carousel.prototype = {
     this._tick();
   },
 };
+Carousel.prototype.constructor = Carousel;
