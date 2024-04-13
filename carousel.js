@@ -7,17 +7,15 @@ class Carousel {
     this.isPlaying = settings.isPlaying;
   }
 
-  _initConfig(o) {
-    return {
-      ...{
-        containerID: "#carousel",
-        slideID: ".slide",
-        interval: 5000,
-        isPlaying: true,
-      },
-      ...o,
-    };
-  }
+  _initConfig = (o) => ({
+    ...{
+      containerID: "#carousel",
+      slideID: ".slide",
+      interval: 5000,
+      isPlaying: true,
+    },
+    ...o,
+  });
 
   _initProps() {
     this.currentSlide = 0;
