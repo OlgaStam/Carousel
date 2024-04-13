@@ -14,29 +14,29 @@ class Carousel {
       interval: 5000,
       isPlaying: true,
     };
-    console.log(
-      "🚀 ~ Carousel ~ _ininConfig ~ objectWithInnerParams:",
-      objectWithInnerParams
-    );
-    console.log("🚀 ~ Carousel ~ _ininConfig ~ defaultObject:", defaultObject);
+    const resultObject = { ...defaultObject, ...objectWithInnerParams };
 
-    const resultObject = {};
+    //   console.log(
+    //   "🚀 ~ Carousel ~ _ininConfig ~ objectWithInnerParams:",
+    //   objectWithInnerParams
+    // );
+    // console.log("🚀 ~ Carousel ~ _ininConfig ~ defaultObject:", defaultObject);
 
-    // == если не задать конфиг - будет андефайнд ошибка - делаем проверку
-    if (typeof objectWithInnerParams === "undefined") {
-      return defaultObject;
-    }
+    // if (typeof objectWithInnerParams === "undefined") {
+    //   return defaultObject;
+    // }
 
-    resultObject.containerID =
-      objectWithInnerParams.containerID || defaultObject.containerID;
-    resultObject.slideID =
-      objectWithInnerParams.slideID || defaultObject.slideID;
-    resultObject.interval =
-      objectWithInnerParams.interval || defaultObject.interval;
-    resultObject.isPlaying =
-      objectWithInnerParams.isPlaying || defaultObject.isPlaying;
-
-    console.log("🚀 ~ Carousel ~ _initConfig ~ resultObject:", resultObject);
+    // resultObject.containerID =
+    //   objectWithInnerParams.containerID || defaultObject.containerID;
+    // resultObject.slideID =
+    //   objectWithInnerParams.slideID || defaultObject.slideID;
+    // resultObject.interval =
+    //   objectWithInnerParams.interval || defaultObject.interval;
+    // resultObject.isPlaying =
+    //   objectWithInnerParams.isPlaying || defaultObject.isPlaying;
+    // вместо этого кода для слияния нужна одна строка
+    //   оператор "..." разобрал и получил копию
+    // console.log({ ...defaultObject, ...objectWithInnerParams });
     return resultObject;
   }
 
