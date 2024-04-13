@@ -24,10 +24,40 @@ Carousel.prototype = {
     this.CODE_SPACE = "Space";
     this.FA_PAUSE = '<i class="fas fa-pause-circle">';
     this.FA_PLAY = '<i class="fas fa-play-circle">';
-    // убираем, т.к. если обратится к ненуществующему свойству - оно будет создано
-    // this.timerID = null;
-    // this.startPosX = null;
-    // this.endPosX = null;
+  },
+
+  _initControls() {
+    //   ==1== создаем элемент
+    const controls = document.createElement("div");
+    //   ==4 ==добавляем 3 кнопки
+    const PAUSE = `<div id="pause-btn" class="control control-pause">
+                    <i class="fas fa-pause-circle"></i>
+                  </div>`;
+    const PREV = `<div id="prev-btn" class="control control-prev"> 
+                    <i class="fas fa-angle-left"></i>
+                  </div>`;
+    const NEXT = `<div id="next-btn" class="control control-next">
+                    <i class="fas fa-angle-right"></i>
+                </div>`;
+    //  ==3== перед тем как аппендить создаем обвязку с классами - установить значение указанного атрибута для выбранного элемента
+    // идентификатор возможно не понадобится, т.к. работать с элементом будем динамически
+    controls.setAttribute("class", "controls");
+    //  ==5== после того как добавили атрибуты прописываем во внутренний HTML наш код
+    controls.innerHTML = PREV + PAUSE + NEXT;
+    //   ==2== добавление нового HTML-элемента внутрь пустого дива на веб-странице
+    this.container.append(controls);
+    //   код из HTML, который будем создавать динамически:
+    // <div id="controls-container" class="controls">
+    //   <div id="prev-btn" class="control control-prev"> СОЗДАЕМ ЭТОТ ЭЛЕМЕНТ
+    //     <i class="fas fa-angle-left"></i>
+    //   </div>
+    //   <div id="pause-btn" class="control control-pause">
+    //     <i class="fas fa-pause-circle"></i>
+    //   </div>
+    //   <div id="next-btn" class="control control-next">
+    //     <i class="fas fa-angle-right"></i>
+    //   </div>
+    // </div>
   },
 
   _initListeners() {
@@ -38,7 +68,6 @@ Carousel.prototype = {
       "click",
       this._indicate.bind(this)
     );
-
     document.addEventListener("keydown", this._pressKey.bind(this));
   },
   _gotoNth(n) {
@@ -102,6 +131,7 @@ Carousel.prototype = {
 
   initApp() {
     this._initProps();
+    this._initControls();
     this._initListeners();
     this._tick();
   },

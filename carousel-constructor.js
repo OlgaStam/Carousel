@@ -8,7 +8,6 @@ SwipeCarousel.prototype = Object.create(Carousel.prototype);
 SwipeCarousel.prototype.constructor = SwipeCarousel;
 
 SwipeCarousel.prototype._initListeners = function () {
-  // кнопки отвалились, фиксим: передаем контекст, вызываются базовые лисенеры, потом добавляются обработчики
   Carousel.prototype._initListeners.apply(this);
   this.slidesContainer.addEventListener(
     "touchstart",
