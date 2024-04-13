@@ -1,15 +1,19 @@
 // todo: переписать через классы
-
-function Carousel() {
-  this.container = document.querySelector("#container");
-  this.slides = this.container.querySelectorAll(".slide");
+function Carousel(
+  // вынесли в параметры и можем управлять функцией - через конфиг в индексе
+  containerID = "#container",
+  slideID = ".slide",
+  interval = 5000
+) {
+  this.container = document.querySelector(containerID);
+  this.slides = this.container.querySelectorAll(slideID);
+  this.interval = interval;
 }
 
 Carousel.prototype = {
   _initProps() {
     this.currentSlide = 0;
     this.isPlaying = true;
-    this.interval = 1000;
     this.SLIDES_COUNT = this.slides.length;
     this.CODE_ARROW_RIGHT = "ArrowRight";
     this.CODE_ARROW_LEFT = "ArrowLeft";
@@ -49,6 +53,7 @@ Carousel.prototype = {
         i !== 0 ? "indicator" : "indicator active"
       );
       indicator.dataset.slideTo = `${i}`; //с конвертацией і в строку
+      //   indicator.innerHTML = `${i + 1}`;// можно добавить текст, только без тегов, а то сломаем
       indicators.append(indicator);
     }
 

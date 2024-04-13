@@ -60,6 +60,14 @@ just for appearance; change whatever you want
     background: purple;
 }
 
+.slide:nth-of-type(6) {
+    background: yellowgreen;
+}
+
+.slide:nth-of-type(7) {
+    background: yellow;
+}
+
 /*  castomization */
 body {
     margin: 20px;
