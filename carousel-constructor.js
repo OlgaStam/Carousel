@@ -1,23 +1,13 @@
-// ==1== экстендимся от класса карусель
+import Carousel from "./carousel.js"; //.js не забываем вручную
+// файл появился, ошибка - нет экспорта по дефолту из carousel.js, идем туда, добавляем внизу
 class SwipeCarousel extends Carousel {
-  //  ==2== вызываем конструктор, в котором параметры получаем уже не через arguments, а через рест-оператор
-  // Рест-оператор (...): Он используется для сбора оставшихся аргументов функции в массив или для превращения
-  // части массива в отдельные переменные. Это позволяет обрабатывать функции с переменным числом аргументов.
   constructor(...args) {
-    //  ==3== Carousel.apply(this); заменяем на
-    //   вызываем базовый класс и отдаем ему все параметры, раскладывая их снова в список
     super(...args);
     //   todo: исправить позже
     this.slidesContainer = this.container.querySelector(".slides");
   }
 
-  // выбрасываем работу с прототипами
-  // все остальное становится методами класса
-
   _initListeners() {
-    // Carousel.prototype._initListeners.apply(this);
-    //   вместо этой строчки обращаемся к супер-классу и у него вызываем инитлисенер
-    // никаких больше прототипов, єплаем и восстановления контекста
     super._initListeners();
     this.slidesContainer.addEventListener(
       "touchstart",
@@ -47,3 +37,6 @@ class SwipeCarousel extends Carousel {
     if (this.endPosX - this.startPosX < -100) this.next();
   }
 }
+export default SwipeCarousel;
+// отдали, теперь ошибка Carousel is not defined at carousel-constructor.js:1:29
+//  идем в 1 строку имортируем карусель

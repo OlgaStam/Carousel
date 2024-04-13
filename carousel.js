@@ -140,4 +140,4 @@ class Carousel {
     this._tick();
   }
 }
-// в классе не нужны ни прототипы, ни восстановление конструктора
+export default Carousel;
