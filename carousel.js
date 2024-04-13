@@ -113,8 +113,3 @@ Carousel.prototype = {
     this._tick();
   },
 };
-
-Carousel.prototype.constructor = Carousel;
-
-const carousel = new Carousel();
-carousel.initApp();
