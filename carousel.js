@@ -1,3 +1,5 @@
+// todo: переписать через классы
+
 function Carousel() {
   this.container = document.querySelector("#container");
   this.slides = this.container.querySelectorAll(".slide");
@@ -8,21 +10,37 @@ function Carousel() {
     "#indicators-container"
   );
   this.indicatorItems = this.indicatorsContainer.querySelectorAll(".indicator");
-  this.SLIDES_COUNT = this.slides.length;
-  this.CODE_ARROW_RIGHT = "ArrowRight";
-  this.CODE_ARROW_LEFT = "ArrowLeft";
-  this.CODE_SPACE = "Space";
-  this.FA_PAUSE = '<i class="fas fa-pause-circle">';
-  this.FA_PLAY = '<i class="fas fa-play-circle">';
-  this.currentSlide = 0;
-  this.timerID = null;
-  this.isPlaying = true;
-  this.interval = 1000;
-  this.startPosX = null;
-  this.endPosX = null;
+  // разгружаем функцию конструктор чтобы там осталась только суть
 }
 
 Carousel.prototype = {
+  _initProps() {
+    // все это относится с инициализации свойств
+    this.SLIDES_COUNT = this.slides.length;
+    this.CODE_ARROW_RIGHT = "ArrowRight";
+    this.CODE_ARROW_LEFT = "ArrowLeft";
+    this.CODE_SPACE = "Space";
+    this.FA_PAUSE = '<i class="fas fa-pause-circle">';
+    this.FA_PLAY = '<i class="fas fa-play-circle">';
+    this.currentSlide = 0;
+    this.timerID = null;
+    this.isPlaying = true;
+    this.interval = 1000;
+    this.startPosX = null;
+    this.endPosX = null;
+  },
+
+  _initListeners() {
+    this.pauseBtn.addEventListener("click", this.pausePlay.bind(this));
+    this.prevBtn.addEventListener("click", this.prev.bind(this));
+    this.nextBtn.addEventListener("click", this.next.bind(this));
+    this.indicatorsContainer.addEventListener(
+      "click",
+      this._indicate.bind(this)
+    );
+
+    document.addEventListener("keydown", this._pressKey.bind(this));
+  },
   _gotoNth(n) {
     this.slides[this.currentSlide].classList.toggle("active");
     this.indicatorItems[this.currentSlide].classList.toggle("active");
@@ -82,18 +100,8 @@ Carousel.prototype = {
     if (e.code === this.CODE_SPACE) this.pausePlay();
   },
 
-  _initListeners() {
-    this.pauseBtn.addEventListener("click", this.pausePlay.bind(this));
-    this.prevBtn.addEventListener("click", this.prev.bind(this));
-    this.nextBtn.addEventListener("click", this.next.bind(this));
-    this.indicatorsContainer.addEventListener(
-      "click",
-      this._indicate.bind(this)
-    );
-
-    document.addEventListener("keydown", this._pressKey.bind(this));
-  },
   initApp() {
+    this._initProps();
     this._initListeners();
     this._tick();
   },
