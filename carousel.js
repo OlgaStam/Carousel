@@ -1,16 +1,42 @@
 class Carousel {
   constructor(params) {
-    // дефолтный объект "params"
-    // {
-    //     containerID: "#myslider",
-    //     slideID: ".slide",
-    //     interval: 1000,
-    //     isPlaing: true,
-    //   }
-    this.container = document.querySelector(params.containerID);
-    this.slideItems = this.container.querySelectorAll(params.slideID);
-    this.interval = params.interval;
-    this.isPlaying = params.isPlaying;
+    //   ==2==
+    const settings = this._initConfig(params);
+    //    ==3==
+    this.container = document.querySelector(settings.containerID);
+    this.slideItems = this.container.querySelectorAll(settings.slideID);
+    this.interval = settings.interval;
+    this.isPlaying = settings.isPlaying;
+  }
+
+  // ==1==
+  _initConfig(objectWithInnerParams) {
+    const defaultObject = {
+      containerID: "#carousel",
+      slideID: ".slide",
+      interval: 5000,
+      isPlaying: true,
+    };
+    //   ==4==
+    console.log(
+      "🚀 ~ Carousel ~ _ininConfig ~ objectWithInnerParams:",
+      objectWithInnerParams
+    );
+    console.log("🚀 ~ Carousel ~ _ininConfig ~ defaultObject:", defaultObject);
+    //  ==5== полученный с дефолтным нужно смёрджить
+    const resultObject = {};
+    resultObject.containerID =
+      objectWithInnerParams.containerID || defaultObject.containerID;
+    resultObject.slideID =
+      objectWithInnerParams.slideID || defaultObject.slideID;
+    resultObject.interval =
+      objectWithInnerParams.interval || defaultObject.interval;
+    resultObject.isPlaying =
+      objectWithInnerParams.isPlaying || defaultObject.isPlaying;
+
+    // return defaultObject;
+    console.log("🚀 ~ Carousel ~ _initConfig ~ resultObject:", resultObject);
+    return resultObject;
   }
 
   _initProps() {
