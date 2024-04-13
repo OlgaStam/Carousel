@@ -13,21 +13,17 @@ class Carousel {
     this.slideItems = this.container.querySelectorAll(settings.slideID);
     this.interval = settings.interval;
     this.isPlaying = settings.isPlaying;
+    //   ==2== проверяем в консоли что isPlaying фолс, но нужно статус кнопки поставить дефолтно.
+    // console.log(
+    //   "🚀 ~ Carousel ~ constructor ~ this.isPlaying :",
+    //   this.isPlaying
+    // );
+    //  нужно сделать чтобы не тикало, для этого при вызове тик должен принять параметром isPlaying
   }
-  //  можем не писать функцию, а передать сразу этот объект, переопределив параметры "о" на "р"
-  //   _initConfig = (o) => ({
-  //     ...{
-  //       containerID: "#carousel",
-  //       slideID: ".slide",
-  //       interval: 5000,
-  //       isPlaying: true,
-  //     },
-  //     ...o,
-  //   });
 
   _initProps() {
     this.currentSlide = 0;
-    this.isPlaying = true;
+
     this.SLIDES_COUNT = this.slideItems.length;
     this.CODE_ARROW_RIGHT = "ArrowRight";
     this.CODE_ARROW_LEFT = "ArrowLeft";
@@ -40,14 +36,19 @@ class Carousel {
 
   _initControls() {
     const controls = document.createElement("div");
-    const PAUSE = `<div id="pause-btn" class="control control-pause">${this.FA_PAUSE}</div>`;
+    //   фиксим отображение кнопки
+    const PAUSE = `<div id="pause-btn" class="control control-pause">
+                        ${this.isPlaying ? this.FA_PAUSE : this.FA_PLAY}
+                    </div>`;
     const PREV = `<div id="prev-btn" class="control control-prev">${this.FA_PREV}</div>`;
     const NEXT = `<div id="next-btn" class="control control-next">${this.FA_NEXT}</div>`;
+
     controls.setAttribute("id", "controls-container");
     controls.setAttribute("class", "controls");
     controls.innerHTML = PREV + PAUSE + NEXT;
 
     this.container.append(controls);
+
     this.pauseBtn = this.container.querySelector("#pause-btn");
     this.prevBtn = this.container.querySelector("#prev-btn");
     this.nextBtn = this.container.querySelector("#next-btn");
@@ -67,7 +68,7 @@ class Carousel {
         i !== 0 ? "indicator" : "indicator active"
       );
       indicator.dataset.slideTo = `${i}`; //с конвертацией і в строку
-      //   indicator.innerHTML = `${i + 1}`;// можно добавить текст, только без тегов, а то сломаем
+      indicator.innerHTML = `${i + 1}`; // можно добавить текст, только без тегов, а то сломаем
       indicators.append(indicator);
     }
 
@@ -107,41 +108,30 @@ class Carousel {
     this._gotoNth(this.currentSlide + 1);
   }
 
-  _tick() {
+  // ==4== по умолчанию ставим флагу труе
+  _tick(flag = true) {
+    // если флаг заходит фолс - выйти из функции
+    if (!flag) return;
     this.timerID = setInterval(() => this._gotoNext(), this.interval);
   }
 
-  _playHandler() {
+  _play() {
     this.pauseBtn.innerHTML = this.FA_PAUSE;
     this.isPlaying = true;
     this._tick();
   }
 
-  _pauseHandler() {
+  _pause() {
     this.pauseBtn.innerHTML = this.FA_PLAY;
     this.isPlaying = false;
     clearInterval(this.timerID);
-  }
-
-  pausePlay() {
-    return this.isPlaying ? this._pauseHandler() : this._playHandler();
-  }
-
-  prev() {
-    this._pauseHandler();
-    this._gotoPrev();
-  }
-
-  next() {
-    this._pauseHandler();
-    this._gotoNext();
   }
 
   _indicate(e) {
     const target = e.target;
 
     if (target && target.classList.contains("indicator")) {
-      this._pauseHandler();
+      this._pause();
       this._gotoNth(+target.dataset.slideTo);
     }
   }
@@ -152,12 +142,27 @@ class Carousel {
     if (e.code === this.CODE_SPACE) this.pausePlay();
   }
 
+  pausePlay() {
+    return this.isPlaying ? this._pause() : this._play();
+  }
+
+  prev() {
+    this._pause();
+    this._gotoPrev();
+  }
+
+  next() {
+    this._pause();
+    this._gotoNext();
+  }
+
   initApp() {
     this._initProps();
     this._initControls();
     this._initIndicators();
     this._initListeners();
-    this._tick();
+    //  ==3== сделать чтобы не тикало - при вызове передадим параметр
+    this._tick(this.isPlaying);
   }
 }
 export default Carousel;
