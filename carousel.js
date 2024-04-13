@@ -1,16 +1,10 @@
-// todo: переписать через классы
-function Carousel(
-  // вынесли в параметры и можем управлять функцией - через конфиг в индексе
-  containerID = "#container",
-  slideID = ".slide",
-  interval = 5000
-) {
-  this.container = document.querySelector(containerID);
-  this.slides = this.container.querySelectorAll(slideID);
-  this.interval = interval;
-}
+class Carousel {
+  constructor(containerID = "#container", slideID = ".slide", interval = 5000) {
+    this.container = document.querySelector(containerID);
+    this.slides = this.container.querySelectorAll(slideID);
+    this.interval = interval;
+  }
 
-Carousel.prototype = {
   _initProps() {
     this.currentSlide = 0;
     this.isPlaying = true;
@@ -22,7 +16,7 @@ Carousel.prototype = {
     this.FA_PLAY = '<i class="fas fa-play-circle"></i>';
     this.FA_PREV = '<i class="fas fa-angle-left"></i>';
     this.FA_NEXT = '<i class="fas fa-angle-right"></i>';
-  },
+  }
 
   _initControls() {
     const controls = document.createElement("div");
@@ -37,7 +31,7 @@ Carousel.prototype = {
     this.pauseBtn = this.container.querySelector("#pause-btn");
     this.prevBtn = this.container.querySelector("#prev-btn");
     this.nextBtn = this.container.querySelector("#next-btn");
-  },
+  }
 
   _initIndicators() {
     const indicators = document.createElement("div");
@@ -64,7 +58,7 @@ Carousel.prototype = {
     );
     this.indicatorItems =
       this.indicatorsContainer.querySelectorAll(".indicator");
-  },
+  }
 
   _initListeners() {
     this.pauseBtn.addEventListener("click", this.pausePlay.bind(this));
@@ -75,50 +69,53 @@ Carousel.prototype = {
       this._indicate.bind(this)
     );
     document.addEventListener("keydown", this._pressKey.bind(this));
-  },
+  }
+
   _gotoNth(n) {
     this.slides[this.currentSlide].classList.toggle("active");
     this.indicatorItems[this.currentSlide].classList.toggle("active");
     this.currentSlide = (n + this.SLIDES_COUNT) % this.SLIDES_COUNT;
     this.indicatorItems[this.currentSlide].classList.toggle("active");
     this.slides[this.currentSlide].classList.toggle("active");
-  },
+  }
 
   _gotoPrev() {
     this._gotoNth(this.currentSlide - 1);
-  },
+  }
 
   _gotoNext() {
     this._gotoNth(this.currentSlide + 1);
-  },
+  }
 
   _tick() {
     this.timerID = setInterval(() => this._gotoNext(), this.interval);
-  },
+  }
 
   _playHandler() {
     this.pauseBtn.innerHTML = this.FA_PAUSE;
     this.isPlaying = true;
     this._tick();
-  },
+  }
 
   _pauseHandler() {
     this.pauseBtn.innerHTML = this.FA_PLAY;
     this.isPlaying = false;
     clearInterval(this.timerID);
-  },
+  }
 
   pausePlay() {
     return this.isPlaying ? this._pauseHandler() : this._playHandler();
-  },
+  }
+
   prev() {
     this._pauseHandler();
     this._gotoPrev();
-  },
+  }
+
   next() {
     this._pauseHandler();
     this._gotoNext();
-  },
+  }
 
   _indicate(e) {
     const target = e.target;
@@ -127,21 +124,20 @@ Carousel.prototype = {
       this._pauseHandler();
       this._gotoNth(+target.dataset.slideTo);
     }
-  },
+  }
 
   _pressKey(e) {
     if (e.code === this.CODE_ARROW_RIGHT) this.next();
     if (e.code === this.CODE_ARROW_LEFT) this.prev();
     if (e.code === this.CODE_SPACE) this.pausePlay();
-  },
+  }
 
-  //   ==2== инициализируем индикаторс
   initApp() {
     this._initProps();
     this._initControls();
     this._initIndicators();
     this._initListeners();
     this._tick();
-  },
-};
-Carousel.prototype.constructor = Carousel;
+  }
+}
+// в классе не нужны ни прототипы, ни восстановление конструктора
