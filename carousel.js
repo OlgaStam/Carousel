@@ -30,10 +30,6 @@ class Carousel {
 
   _initControls() {
     const controls = document.createElement("div");
-    // const PAUSE = `<div id="pause-btn" class="control control-pause">
-    //                     ${this.isPlaying ? this.FA_PAUSE : this.FA_PLAY}
-    //                 </div>`;
-    // ==1== в таком виде кнопка рендерится, перепишем чтобы менялась только визуально
     const PAUSE = `<div id="pause-btn" class="control control-pause">
                       <span id="fa-pause-icon">${this.FA_PAUSE}</span>
                       <span id="fa-play-icon">${this.FA_PLAY}</span>
@@ -51,19 +47,8 @@ class Carousel {
     this.prevBtn = this.container.querySelector("#prev-btn");
     this.nextBtn = this.container.querySelector("#next-btn");
 
-    // ==2== делаем выборку, проверяем в консоли что это они
     this.pauseIcon = this.container.querySelector("#fa-pause-icon");
-    // console.log(
-    //   "🚀 ~ Carousel ~ _initControls ~ this.pauseIcon:",
-    //   this.pauseIcon
-    // );
     this.playIcon = this.container.querySelector("#fa-play-icon");
-    // console.log(
-    //   "🚀 ~ Carousel ~ _initControls ~ this.playIcon:",
-    //   this.playIcon
-    // );
-
-    // ==8== добавляем изначальное состояние
     this.isPlaying ? this._pauseVisible() : this._playVisible();
   }
 
@@ -95,6 +80,7 @@ class Carousel {
   }
 
   _initListeners() {
+    document.addEventListener("keydown", this._pressKey.bind(this));
     this.pauseBtn.addEventListener("click", this.pausePlay.bind(this));
     this.prevBtn.addEventListener("click", this.prev.bind(this));
     this.nextBtn.addEventListener("click", this.next.bind(this));
@@ -102,7 +88,9 @@ class Carousel {
       "click",
       this._indicate.bind(this)
     );
-    document.addEventListener("keydown", this._pressKey.bind(this));
+    // ==1== haver для паузы вместо кнопки
+    this.container.addEventListener("mouseenter", this._pause.bind(this));
+    this.container.addEventListener("mouseleave", this._play.bind(this));
   }
 
   _gotoNth(n) {
@@ -117,13 +105,11 @@ class Carousel {
     this._gotoNth(this.currentSlide - 1);
   }
 
-  // ==4== если нам нужна видимая кнопка "пауза"
   _pauseVisible(isVisible = true) {
     this.pauseIcon.style.opacity = isVisible ? 1 : 0;
     this.playIcon.style.opacity = isVisible ? 0 : 1;
   }
 
-  // ==5== чтобы не вызывать каждый раз _pauseVisible с параметрами проще вызвать ф-ю
   _playVisible() {
     this._pauseVisible(false);
   }
@@ -134,21 +120,22 @@ class Carousel {
 
   _tick(flag = true) {
     if (!flag) return;
+    // ==2== фиксим баг с таймером, чтобы не переустанавливался дважды при наведении и одновременном пробеле
+    if (this.timerID) return;
     this.timerID = setInterval(() => this._gotoNext(), this.interval);
   }
 
   _play() {
-    // ==6== меняем код
     this._pauseVisible();
     this.isPlaying = true;
     this._tick();
   }
 
   _pause() {
-    // ==7== меняем код
     this._playVisible();
     this.isPlaying = false;
     clearInterval(this.timerID);
+    this.timerID = null;
   }
 
   _indicate(e) {

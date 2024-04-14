@@ -74,7 +74,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.carusel {
+.carousel {
     /* запрет на выделение юзером текста на странице */
     user-select: none;
 }
@@ -121,9 +121,9 @@ body {
     background-color: tomato;
 }
 
-/* ==3== визуально скроем кнопки opacity: 0;*/
 .control-pause span {
     position: absolute;
     display: block;
     opacity: 0;
+    transition: 0.5s;
 }
