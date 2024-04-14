@@ -13,12 +13,6 @@ class Carousel {
     this.slideItems = this.container.querySelectorAll(settings.slideID);
     this.interval = settings.interval;
     this.isPlaying = settings.isPlaying;
-    //   ==2== проверяем в консоли что isPlaying фолс, но нужно статус кнопки поставить дефолтно.
-    // console.log(
-    //   "🚀 ~ Carousel ~ constructor ~ this.isPlaying :",
-    //   this.isPlaying
-    // );
-    //  нужно сделать чтобы не тикало, для этого при вызове тик должен принять параметром isPlaying
   }
 
   _initProps() {
@@ -36,9 +30,13 @@ class Carousel {
 
   _initControls() {
     const controls = document.createElement("div");
-    //   фиксим отображение кнопки
+    // const PAUSE = `<div id="pause-btn" class="control control-pause">
+    //                     ${this.isPlaying ? this.FA_PAUSE : this.FA_PLAY}
+    //                 </div>`;
+    // ==1== в таком виде кнопка рендерится, перепишем чтобы менялась только визуально
     const PAUSE = `<div id="pause-btn" class="control control-pause">
-                        ${this.isPlaying ? this.FA_PAUSE : this.FA_PLAY}
+                      <span id="fa-pause-icon">${this.FA_PAUSE}</span>
+                      <span id="fa-play-icon">${this.FA_PLAY}</span>
                     </div>`;
     const PREV = `<div id="prev-btn" class="control control-prev">${this.FA_PREV}</div>`;
     const NEXT = `<div id="next-btn" class="control control-next">${this.FA_NEXT}</div>`;
@@ -52,6 +50,21 @@ class Carousel {
     this.pauseBtn = this.container.querySelector("#pause-btn");
     this.prevBtn = this.container.querySelector("#prev-btn");
     this.nextBtn = this.container.querySelector("#next-btn");
+
+    // ==2== делаем выборку, проверяем в консоли что это они
+    this.pauseIcon = this.container.querySelector("#fa-pause-icon");
+    // console.log(
+    //   "🚀 ~ Carousel ~ _initControls ~ this.pauseIcon:",
+    //   this.pauseIcon
+    // );
+    this.playIcon = this.container.querySelector("#fa-play-icon");
+    // console.log(
+    //   "🚀 ~ Carousel ~ _initControls ~ this.playIcon:",
+    //   this.playIcon
+    // );
+
+    // ==8== добавляем изначальное состояние
+    this.isPlaying ? this._pauseVisible() : this._playVisible();
   }
 
   _initIndicators() {
@@ -104,25 +117,36 @@ class Carousel {
     this._gotoNth(this.currentSlide - 1);
   }
 
+  // ==4== если нам нужна видимая кнопка "пауза"
+  _pauseVisible(isVisible = true) {
+    this.pauseIcon.style.opacity = isVisible ? 1 : 0;
+    this.playIcon.style.opacity = isVisible ? 0 : 1;
+  }
+
+  // ==5== чтобы не вызывать каждый раз _pauseVisible с параметрами проще вызвать ф-ю
+  _playVisible() {
+    this._pauseVisible(false);
+  }
+
   _gotoNext() {
     this._gotoNth(this.currentSlide + 1);
   }
 
-  // ==4== по умолчанию ставим флагу труе
   _tick(flag = true) {
-    // если флаг заходит фолс - выйти из функции
     if (!flag) return;
     this.timerID = setInterval(() => this._gotoNext(), this.interval);
   }
 
   _play() {
-    this.pauseBtn.innerHTML = this.FA_PAUSE;
+    // ==6== меняем код
+    this._pauseVisible();
     this.isPlaying = true;
     this._tick();
   }
 
   _pause() {
-    this.pauseBtn.innerHTML = this.FA_PLAY;
+    // ==7== меняем код
+    this._playVisible();
     this.isPlaying = false;
     clearInterval(this.timerID);
   }
@@ -161,7 +185,6 @@ class Carousel {
     this._initControls();
     this._initIndicators();
     this._initListeners();
-    //  ==3== сделать чтобы не тикало - при вызове передадим параметр
     this._tick(this.isPlaying);
   }
 }
